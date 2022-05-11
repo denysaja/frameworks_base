@@ -1098,21 +1098,28 @@ public class PermissionManagerService {
                         // split in Q.
                         final List<PermissionManager.SplitPermissionInfo> permissionList =
                                 getSplitPermissions();
-                        int numSplitPerms = permissionList.size();
-                        for (int splitPermNum = 0; splitPermNum < numSplitPerms; splitPermNum++) {
-                            PermissionManager.SplitPermissionInfo sp =
-                                    permissionList.get(splitPermNum);
-                            String splitPermName = sp.getSplitPermission();
-                            if (sp.getNewPermissions().contains(permName)
-                                    && origPermissions.hasInstallPermission(splitPermName)) {
-                                upgradedActivityRecognitionPermission = splitPermName;
-                                newImplicitPermissions.add(permName);
 
-                                if (DEBUG_PERMISSIONS) {
-                                    Slog.i(TAG, permName + " is newly added for "
-                                            + pkg.packageName);
+
+                        // b/210065877: Check that the installed version is pre Q to auto-grant in
+                        // case of OS update
+                        if (mPackageManagerInt.getInstalledSdkVersion(pkg)
+                                < Build.VERSION_CODES.Q) {
+                            int numSplitPerms = permissionList.size();
+                            for (int splitPermNum = 0; splitPermNum < numSplitPerms;
+                                    splitPermNum++) {
+                                PermissionManager.SplitPermissionInfo sp =
+                                    permissionList.get(splitPermNum);
+                                String splitPermName = sp.getSplitPermission();
+                                if (sp.getNewPermissions().contains(permName)
+                                        && origPermissions.hasInstallPermission(splitPermName)) {
+                                    upgradedActivityRecognitionPermission = splitPermName;
+                                    newImplicitPermissions.add(permName);
+                                    if (DEBUG_PERMISSIONS) {
+                                        Slog.i(TAG, permName + " is newly added for "
+                                                + pkg.packageName);
+                                    }
+                                    break;
                                 }
-                                break;
                             }
                         }
                     }
