@@ -15338,6 +15338,15 @@ public final class Settings {
         private static final Validator WIFI_SCAN_THROTTLE_ENABLED_VALIDATOR = BOOLEAN_VALIDATOR;
 
         /**
+         * Force disable Secure User Plane Location (SUPL), 0 or 1.
+         * @hide
+         */
+        public static final String FORCE_DISABLE_SUPL = "force_disable_supl";
+
+        /** @hide */
+        public static final int FORCE_DISABLE_SUPL_DEFAULT = 0;
+
+        /**
         * Settings to allow BLE scans to be enabled even when Bluetooth is turned off for
         * connectivity.
         * @hide
