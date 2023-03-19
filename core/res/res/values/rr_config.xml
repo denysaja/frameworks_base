@@ -158,6 +158,7 @@
        config to 19. -->
     <integer name="config_deviceHardwareKeys">0</integer>
 
+
     <!-- Hardware 'face' keys present on the device, stored as a bit field.
          This integer should equal the sum of the corresponding value for each
          of the following keys present:
@@ -238,6 +239,7 @@
 
     <!-- Enable doze for FODScreen off -->
     <bool name="config_fodScreenOffDoze">true</bool>
+
 
     <!-- Defines the sysfs attribute path used by the device
          to enable/disable DC dimming. -->
