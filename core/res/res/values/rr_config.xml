@@ -246,6 +246,6 @@
     <string name="config_deviceDcDimmingSysfsNode"></string>
 
     <!-- Whether power menu advanced reboot enabled by default -->
-    <bool name="config_powermenuadvanceddefault">false</bool>
+    <bool name="config_powermenuadvanceddefault">true</bool>
 
 </resources>
