@@ -50,6 +50,7 @@ import com.android.systemui.Dependency;
 import com.android.systemui.R;
 import com.android.systemui.SystemUIFactory;
 import com.android.systemui.statusbar.phone.UnlockMethodCache;
+import com.android.systemui.statusbar.policy.DeviceProvisionedController;
 import com.android.systemui.util.InjectionInflationController;
 
 public class KeyguardSecurityContainer extends FrameLayout implements KeyguardSecurityView {
@@ -103,6 +104,7 @@ public class KeyguardSecurityContainer extends FrameLayout implements KeyguardSe
     private boolean mIsDragging;
     private float mStartTouchY = -1;
     private View fod_view;
+    private final DeviceProvisionedController mDeviceProvisionedController;
 
     // Used to notify the container when something interesting happens.
     public interface SecurityCallback {
@@ -139,6 +141,7 @@ public class KeyguardSecurityContainer extends FrameLayout implements KeyguardSe
             SystemUIFactory.getInstance().getRootComponent());
         mUnlockMethodCache = UnlockMethodCache.getInstance(context);
         mViewConfiguration = ViewConfiguration.get(context);
+       mDeviceProvisionedController = Dependency.get(DeviceProvisionedController.class);
     }
 
     public void setSecurityCallback(SecurityCallback callback) {
@@ -554,8 +557,11 @@ public class KeyguardSecurityContainer extends FrameLayout implements KeyguardSe
                 case SimPuk:
                     // Shortcut for SIM PIN/PUK to go to directly to user's security screen or home
                     SecurityMode securityMode = mSecurityModel.getSecurityMode(targetUserId);
-                    if (securityMode == SecurityMode.None && mLockPatternUtils.isLockScreenDisabled(
-                            KeyguardUpdateMonitor.getCurrentUser())) {
+                    boolean isLockscreenDisabled = mLockPatternUtils.isLockScreenDisabled(
+                            KeyguardUpdateMonitor.getCurrentUser())
+                            || !mDeviceProvisionedController.isUserSetup(targetUserId);
+
+                    if (securityMode == SecurityMode.None || isLockscreenDisabled) {
                         finish = true;
                         eventSubtype = BOUNCER_DISMISS_SIM;
                     } else {
