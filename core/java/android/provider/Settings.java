@@ -7068,6 +7068,11 @@ public final class Settings {
         public static final String STOCK_STATUSBAR_IN_HIDE = "stock_statusbar_in_hide";
 
         /**
+         * Weather to enable statusbar dual
+         */
+        public static final String STATUSBAR_DUAL = "statusbar_dual";
+
+        /**
          * Select which lockscreen date style to display
          * @hide
          */
@@ -7079,7 +7084,7 @@ public final class Settings {
          * @hide
          */
         public static final String FORCE_FULLSCREEN_CUTOUT_APPS = "force_full_screen_cutout_apps";
-        
+
         /**
          * Whether to show battery percent on ambient bottom
          * @hide
